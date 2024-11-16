@@ -107,3 +107,11 @@ npm i mongoos
 npm i @nestjs/config -D
 npm i -D cross-env
  npm install --save @nestjs/swagger
+
+
+
+
+
+save password hash 
+
+create base class db
