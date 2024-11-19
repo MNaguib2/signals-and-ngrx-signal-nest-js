@@ -89,7 +89,6 @@ export class User extends Document {
 export const UserSchema = SchemaFactory.createForClass(User);
 
 UserSchema.pre<User>('save', async function (next) {
-  //https://chatgpt.com/c/67345799-25b4-8004-9c25-cb751daf1360
   if (!this.isNew) return next();
 
   try {
