@@ -2,9 +2,11 @@
 // import { AppModule } from './app.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { NotFoundRedirectFilter } from './Filters/NotFoundRedirectFilter';
+import { useContainer } from 'class-validator';
+import { AppModule } from './app.module';
 export const setup_app = (app: any) => {
   app.enableCors();
-  //   useContainer(app.select(AppModule), { fallbackOnErrors: true });
+  useContainer(app.select(AppModule), { fallbackOnErrors: true }); // to can custom validate read injection or any db
   //   app.useGlobalPipes(
   //     new ValidationPipe({
   //       whitelist: true,

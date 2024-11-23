@@ -133,15 +133,18 @@ export class MyLogger implements LoggerService {
   }
 
   query(message: any) {
+    console.log('====================================');
+    console.log(message);
+    console.log('====================================');
     const msg = `code: ${new Date().getTime()} \n ${message} \n`;
     this.write(this.queryStream, 'QUERY', msg);
   }
 
   url_http(message: any, optionalParams) {
-    const log = `[${this.name_project}] [${this.FgMagenta}${this.customTimestampFormat()}${this.Reset}] [${this.FgGreen}${this.Bright}HTTP URL${
-      this.Reset
-    }${this.Reset}] code: ${new Date().getTime()} \n ${this.FgBlue + this.Blink + message + this.Reset + this.Reset} \n ${optionalParams}`;
-    console.log(log);
+    // const log = `[${this.name_project}] [${this.FgMagenta}${this.customTimestampFormat()}${this.Reset}] [${this.FgGreen}${this.Bright}HTTP URL${
+    //   this.Reset
+    // }${this.Reset}] code: ${new Date().getTime()} \n ${this.FgBlue + this.Blink + message + this.Reset + this.Reset} \n ${optionalParams}`;
+    // console.log(log);
     this.write(
       this.requestStream,
       'HTTP URL',

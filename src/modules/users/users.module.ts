@@ -5,6 +5,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { User, UserSchema } from './schema/user.schema';
 import { UserRepository } from './repositories/user-mongo.repository';
 import { UserService } from './services/users-service';
+import { IsUniqueConstraint } from './controllers/DTO/custom-validation/uniquie-user';
 
 @Module({
   imports: [
@@ -14,6 +15,7 @@ import { UserService } from './services/users-service';
   providers: [
     UserRepository,
     UserService,
+    IsUniqueConstraint,
     {
       provide: APP_PIPE,
       useClass: ValidationPipe,

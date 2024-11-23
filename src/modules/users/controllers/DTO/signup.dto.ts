@@ -6,6 +6,7 @@ import {
 } from 'class-validator';
 import { Match } from '@src/modules/global/decorators/match.decorator';
 import { ApiProperty } from '@nestjs/swagger';
+import { IsUnique } from './custom-validation/uniquie-user';
 
 export class SignupDto {
   @IsString()
@@ -24,6 +25,7 @@ export class SignupDto {
   @IsString()
   @IsNotEmpty()
   @MinLength(10)
+  @IsUnique({ message: 'this Email is already' }, 'email')
   @ApiProperty({ type: 'string', default: 'test@test.com' })
   email: string;
 

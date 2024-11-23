@@ -1,11 +1,13 @@
+import { HttpException, HttpStatus } from '@nestjs/common';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { HydratedDocument, Document } from 'mongoose';
+import { IncrementCounter } from '@src/modules/global/functions/Increment-counter';
+import { HydratedDocument } from 'mongoose';
 
-export type UserDocument = HydratedDocument<User>;
+export type UserHydrated = HydratedDocument<User>;
 
 // Define the User schema and its properties.
 @Schema({ timestamps: true })
-export class User extends Document {
+export class User {
   @Prop({ type: String, required: true })
   first_name: string;
 
@@ -47,7 +49,7 @@ export class User extends Document {
   phone: string;
 
   @Prop({ type: Number, unique: true, required: false })
-  id?: number; // Custom, auto-incrementing ID
+  id: number; // Custom, auto-incrementing ID
 
   @Prop({
     type: String,
@@ -88,21 +90,18 @@ export class User extends Document {
 
 export const UserSchema = SchemaFactory.createForClass(User);
 
-UserSchema.pre<User>('save', async function (next) {
-  if (!this.isNew) return next();
+UserSchema.plugin(IncrementCounter, { field: 'id', counterName: 'userId' });
 
-  try {
-    const counter = await this.db
-      .model('Counter')
-      .findOneAndUpdate(
-        { name: 'userId' },
-        { $inc: { seq: 1 } },
-        { new: true, upsert: true },
-      );
-
-    this.id = counter.seq;
+UserSchema.post('save', function (error: any, doc: any, next: any) {
+  if (error.code === 11000) {
+    const keyValue = Object.keys(error.keyValue).flat();
+    throw new HttpException(
+      'Duplicate Key ' +
+        keyValue +
+        `: - ${error.keyValue[keyValue[0]]} already exists`,
+      HttpStatus.FORBIDDEN,
+    );
+  } else {
     next();
-  } catch (error) {
-    next(error);
   }
 });

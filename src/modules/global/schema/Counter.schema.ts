@@ -1,5 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document } from 'mongoose';
+import { Document, model } from 'mongoose';
 
 @Schema()
 export class Counter extends Document {
@@ -11,3 +11,5 @@ export class Counter extends Document {
 }
 
 export const CounterSchema = SchemaFactory.createForClass(Counter);
+
+export const CounterModel = model('Counter', CounterSchema);
